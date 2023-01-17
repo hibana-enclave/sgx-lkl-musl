@@ -1848,12 +1848,13 @@ prepare_stack_and_jmp_to_exec(void *at_entry, elf64_stack_t *stack, void *tos) {
 
 	*tosptr = (char*) argcnew;
 
-	/* sgx-step */
+    /* randoruf */
     SGXLKL_VERBOSE("************** Application Start **************");
 	if (getenv_bool("SGXLKL_PRINT_APP_RUNTIME", 0))
     {
         clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime);
     }
+	/* randoruf */
 
 	CRTJMP(app_entry, tosptr);
 	for(;;);
