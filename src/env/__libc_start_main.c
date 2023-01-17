@@ -106,6 +106,13 @@ static int libc_start_main_stage2(int (*main)(int,char **,char **), int argc, ch
 	char **envp = argv+argc+1;
 	__libc_start_init();
 
+	/* sgx-step */
+	SGXLKL_VERBOSE("************** Application Start **************");
+	if (getenv_bool("SGXLKL_PRINT_APP_RUNTIME", 0))
+    {
+        clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime);
+    }
+
 	/* Pass control to the application */
 	exit(main(argc, argv, envp));
 	return 0;
