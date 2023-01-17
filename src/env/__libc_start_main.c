@@ -9,6 +9,8 @@
 #include <libc.h>
 #include <string.h>
 
+#include "enclave/enclave_util.c"
+
 static void dummy(void) {}
 weak_alias(dummy, _init);
 
