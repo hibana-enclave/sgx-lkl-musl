@@ -21,10 +21,13 @@
 #include "libc.h"
 #include "dynlink.h"
 #include "malloc_impl.h"
-#include "enclave/enclave_util.h"
 #include <sys/prctl.h>
 
-#include <enclave/enclave_oe.h>
+#include "enclave/enclave_util.h"
+#include "enclave/enclave_oe.h"
+#include "shared/env.h"
+
+extern struct timespec sgxlkl_app_starttime;
 
 static void error(const char *, ...);
 
@@ -1844,6 +1847,13 @@ prepare_stack_and_jmp_to_exec(void *at_entry, elf64_stack_t *stack, void *tos) {
 	}
 
 	*tosptr = (char*) argcnew;
+
+	/* sgx-step */
+	SGXLKL_VERBOSE("Jumping to application entry...");
+	if (getenv_bool("SGXLKL_PRINT_APP_RUNTIME", 0))
+    {
+        clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime);
+    }
 
 	CRTJMP(app_entry, tosptr);
 	for(;;);
