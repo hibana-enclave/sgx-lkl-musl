@@ -20,8 +20,6 @@ weak_alias(dummy1, __init_ssp);
 
 #define AUX_CNT 38
 
-struct timespec sgxlkl_app_starttime;
-
 #ifdef __GNUC__
 __attribute__((__noinline__))
 #endif
@@ -106,10 +104,6 @@ static int libc_start_main_stage2(int (*main)(int,char **,char **), int argc, ch
 {
 	char **envp = argv+argc+1;
 	__libc_start_init();
-
-	/* sgx-step */
-	printf("************** Application Start **************\n");
-    clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime); 
 
 	/* Pass control to the application */
 	exit(main(argc, argv, envp));
