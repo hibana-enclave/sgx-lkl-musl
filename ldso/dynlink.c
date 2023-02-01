@@ -1848,9 +1848,9 @@ prepare_stack_and_jmp_to_exec(void *at_entry, elf64_stack_t *stack, void *tos) {
 	*tosptr = (char*) argcnew;
 
 	/* sgx-step */
-	printf("************** Application Start **************\n");
+	printf("[[ ENC ]] ************** Application Start **************\n");
     clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime); 
-	
+	sgxlkl_app_main_start_notify(); 
 
 	CRTJMP(app_entry, tosptr);
 	for(;;);
