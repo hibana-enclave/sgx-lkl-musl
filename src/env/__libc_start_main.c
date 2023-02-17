@@ -111,11 +111,10 @@ static int libc_start_main_stage2(int (*main)(int,char **,char **), int argc, ch
 	
 	/* sgx-step */
     clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime); 
-	
 	sgxlkl_app_main_start_notify(); 
 	/* Pass control to the application */
 	int __exit_status = main(argc, argv, envp);
-    sgxlkl_app_main_end_notify(); 
+	sgxlkl_app_main_end_notify();
 
 	exit(__exit_status);
 	return 0;
