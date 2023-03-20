@@ -121,7 +121,6 @@ int __clock_gettime(clockid_t clk, struct timespec *ts)
 {
 	int r;
 #ifdef VDSO_CGT_SYM
-	// sgxlkl_warn("clock_gettime() is implemented by vdso\n"); 
 
 	int (*f)(clockid_t, struct timespec *) =
 		(int (*)(clockid_t, struct timespec *))vdso_func;
@@ -136,14 +135,11 @@ int __clock_gettime(clockid_t clk, struct timespec *ts)
 		 * a vdso function to use. */
 	}
 #endif	
-	// sgxlkl_warn("clock_gettime() is implemented by syscall\n"); 
 
 	r = __syscall(SYS_clock_gettime, clk, ts);
-	// sgxlkl_warn("	__clock_gettime(): 	syscall to SYS_clock_gettime\n"); 
 	
 	if (r == -ENOSYS) {
 		if (clk == CLOCK_REALTIME) {
-			// sgxlkl_warn("	__clock_gettime(): 	syscall to SYS_gettimeofday\n"); 
 			__syscall(SYS_gettimeofday, ts, 0);
 			ts->tv_nsec = (int)ts->tv_nsec * 1000;
 			return 0;
