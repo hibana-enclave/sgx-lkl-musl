@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include "libc.h"
 
+extern void sgxlkl_app_main_end_notify(void);
+
 static void dummy()
 {
 }
@@ -26,6 +28,8 @@ weak_alias(libc_exit_fini, __libc_exit_fini);
 
 _Noreturn void exit(int code)
 {
+	sgxlkl_app_main_end_notify(); 
+
 	__funcs_on_exit();
 	__libc_exit_fini();
 	__stdio_exit();
