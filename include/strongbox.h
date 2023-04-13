@@ -1,0 +1,1 @@
+void strongbox_hello(); 
