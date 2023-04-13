@@ -1,1 +1,1 @@
-void strongbox_hello(); 
+void strongbox_attack(); 
