@@ -43,7 +43,7 @@ LDFLAGS =
 LDFLAGS_AUTO =
 LIBCC = -lgcc
 CPPFLAGS =
-CFLAGS =
+CFLAGS = -ffixed-r11 -ffixed-r14 -ffixed-r15
 CFLAGS_AUTO = -Os -pipe
 CFLAGS_C99FSE = -std=c99 -ffreestanding -nostdinc
 

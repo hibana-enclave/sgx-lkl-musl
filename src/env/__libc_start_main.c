@@ -9,6 +9,11 @@
 #include <libc.h>
 #include <string.h>
 
+
+struct timespec sgxlkl_app_starttime;
+extern void sgxlkl_app_main_start_notify(void);
+extern void sgxlkl_app_main_end_notify(void);
+
 static void dummy(void) {}
 weak_alias(dummy, _init);
 
@@ -18,8 +23,6 @@ static void dummy1(void *p) {}
 weak_alias(dummy1, __init_ssp);
 
 #define AUX_CNT 38
-
-struct timespec sgxlkl_app_starttime;
 
 #ifdef __GNUC__
 __attribute__((__noinline__))
@@ -105,8 +108,15 @@ static int libc_start_main_stage2(int (*main)(int,char **,char **), int argc, ch
 {
 	char **envp = argv+argc+1;
 	__libc_start_init();
-
+	
+	/* sgx-step */
+    clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime);
+//    Application starts, notify sgx-lkl on the outside
+	sgxlkl_app_main_start_notify(); 
 	/* Pass control to the application */
-	exit(main(argc, argv, envp));
+	int __exit_status = main(argc, argv, envp);
+	sgxlkl_app_main_end_notify();
+
+	exit(__exit_status);
 	return 0;
 }
