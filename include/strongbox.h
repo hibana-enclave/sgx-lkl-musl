@@ -1,1 +1,0 @@
-void strongbox_attack(); 

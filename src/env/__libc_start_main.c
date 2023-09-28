@@ -12,6 +12,7 @@
 
 struct timespec sgxlkl_app_starttime;
 extern void sgxlkl_app_main_start_notify(void);
+extern void sgxlkl_app_main_end_notify(void);
 
 static void dummy(void) {}
 weak_alias(dummy, _init);
@@ -109,9 +110,13 @@ static int libc_start_main_stage2(int (*main)(int,char **,char **), int argc, ch
 	__libc_start_init();
 	
 	/* sgx-step */
-    clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime); 
+    clock_gettime(CLOCK_MONOTONIC, &sgxlkl_app_starttime);
+//    Application starts, notify sgx-lkl on the outside
 	sgxlkl_app_main_start_notify(); 
 	/* Pass control to the application */
-	exit(main(argc, argv, envp));
+	int __exit_status = main(argc, argv, envp);
+	sgxlkl_app_main_end_notify();
+
+	exit(__exit_status);
 	return 0;
 }
