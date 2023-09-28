@@ -24,6 +24,8 @@ static void libc_exit_fini(void)
 
 weak_alias(libc_exit_fini, __libc_exit_fini);
 
+
+//Original Exit when application finish
 _Noreturn void exit(int code)
 {
 	__funcs_on_exit();

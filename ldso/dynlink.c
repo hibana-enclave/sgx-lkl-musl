@@ -1844,7 +1844,6 @@ prepare_stack_and_jmp_to_exec(void *at_entry, elf64_stack_t *stack, void *tos) {
 	}
 
 	*tosptr = (char*) argcnew;
-
 	CRTJMP(app_entry, tosptr);
 	for(;;);
 }
